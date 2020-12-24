@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Program to output a system information page
+
+declare -r TITLE="System Information Report For $HOSTNAME"
+CURRENT_TIME="$(date +"%x %r %Z")"
+TIMESTAMP="Generated $CURRENT_TIME, by $USER"
+
+report_uptime() {
+	echo "System uptime"
+	uptime
+	return
+}
+
+report_disk_Space() {
+	echo "Disk Space Utilization"
+	df -h
+	return
+}
+
+report_home_space() {
+	if [[ "$(id -u)" -eq 0 ]]; then
+        	echo "Home Space Utilization For All"
+                du -sh /home/*
+	else
+		echo "Home Space Utilization ($USER)"
+		du -sh $HOME/*
+	fi
+	return
+}
+
+clear
+while [[ "$selection" != 0 ]]; do
+	cat <<- _EOF_
+		Select:
+		1. Display system uptime
+		2. Display disk Space
+		3. Display home space
+		0. Exit
+	_EOF_
+	read -p "Selection -> " selection
+	case "$selection" in
+		0)	echo "Exitting..."
+			;;
+		1)	report_uptime
+			;;
+		2)	report_disk_Space
+			;;
+		3)	report_home_space
+			;;
+		*)	echo "Invalid entry..."
+			;;
+	esac	
+done
