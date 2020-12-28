@@ -25,3 +25,4 @@ while [[ "$?" -ne 0 && "$count++" -lt 5  ]]; do
 	check_container coffeeshopdb
 done
 start_container coffeeshopservices
+start_container coffeeshopweb
